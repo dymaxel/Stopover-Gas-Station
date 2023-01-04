@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="tank_dip_reading_tree" model="ir.ui.view">
+        <field name="name">tank.dip.reading.tree</field>
+        <field name="model">tank.dip.reading</field>
+        <field name="arch" type="xml">
+            <tree string="Tank Dip Reading">
+                <field name="name"/>
+                <field name="branch_id"/>
+                <field name="date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tank_dip_reading_form" model="ir.ui.view">
+        <field name="name">tank.dip.reading.form</field>
+        <field name="model">tank.dip.reading</field>
+        <field name="arch" type="xml">
+            <form string="Tank Dip Reading">
+                <header>
+                    <button name="action_running" string="Running" states="draft" type="object" class="btn-primary"/>
+                    <button name="action_validate" string="Validate" states="running" type="object" class="btn-primary"/>
+                    <button name="action_approve" string="Approve" states="submit" type="object" class="btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,running,submit,posted"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_view_sale_orders" type="object" icon="fa-dollar">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="sale_order_count"/></span>
+                                <span class="o_stat_text">Sale</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_purchase_orders" type="object" icon="fa-credit-card">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="purchase_order_count"/></span>
+                                <span class="o_stat_text">Purchase</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_loss_entry" type="object" icon="fa-dollar" attrs="{'invisible': [('loss_entry_count', '=', 0)]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="loss_entry_count"/></span>
+                                <span class="o_stat_text">Loss JE</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Tank Dip Reading" nolabel="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="branch_id"/>
+                            <field name="date"/>
+                            <field name="sale_order_ids" invisible="1"/>
+                            <field name="purchase_order_ids" invisible="1"/>
+                            <field name="loss_move_ids" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <field name="reading_lines">
+                                <tree editable="bottom">
+                                    <field name="location_id" domain="[('branch_id', '=', parent.branch_id), ('is_tank', '=', True), ('product_id', '!=', False)]"/>
+                                    <field name="product_id"/>
+                                    <field name="previous_stock_qty"/>
+                                    <field name="purchase_qty" force_save="1"/>
+                                    <field name="sale_qty" force_save="1"/>
+                                    <field name="on_hand_qty"/>
+                                    <field name="dip_reading"/>
+                                    <field name="tank_loss"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tank_dip_reading" model="ir.actions.act_window">
+        <field name="name">Dip Readings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tank.dip.reading</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No orders found
+            </p>
+            <p>
+                To record tank dip reading record.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="root_menu_gas_station"
+            name="Gas Station"
+            web_icon="dxl_gas_station,static/description/icon.png"/>
+
+    <menuitem
+            id="menu_sub_readings"
+            name="Readings"
+            parent="root_menu_gas_station"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_sub_configuration"
+            name="Configuration"
+            parent="root_menu_gas_station"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_tank_dip_reading"
+            name="Dip Readings"
+            parent="menu_sub_readings"
+            action="action_tank_dip_reading"
+            sequence="10"/>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_location_form_inherit_stopover" model="ir.ui.view">
+            <field name="name">view.location.form.inherit.stopover</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="before">
+                    <field name="is_tank" attrs="{'invisible': [('usage', '!=', 'internal')]}"/>
+                    <field name="product_id" attrs="{'invisible': ['|', ('is_tank', '=', False), ('usage', '!=', 'internal')]}"/>
+                    <field name="tank_code" attrs="{'invisible': ['|', ('is_tank', '=', False), ('usage', '!=', 'internal')]}"/>
+                    <field name="loss_location_id" attrs="{'invisible': ['|', ('is_tank', '=', False), ('usage', '!=', 'internal')]}"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="stock_location_view_tank_tree" model="ir.ui.view">
+            <field name="name">stock.location.view.tank.tree</field>
+            <field name="model">stock.location</field>
+            <field name="arch" type="xml">
+                <tree string="Tanks" create="0" edit="0" delete="0">
+                    <field name="tank_code" string="Tank Code"/>
+                    <field name="tank_name"/>
+                    <field name="name" string="Tank Locations"/>
+                    <field name="branch_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tank_station" model="ir.actions.act_window">
+            <field name="name">Tanks</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.location</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('is_tank', '=', True)]</field>
+            <field name="view_id" ref="stock_location_view_tank_tree"/>
+        </record>
+        <menuitem
+            id="menu_tank_station"
+            name="Tanks"
+            parent="dxl_gas_station.menu_sub_configuration"
+            action="action_tank_station"/>
+    </data>
+</odoo>

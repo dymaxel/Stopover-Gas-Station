@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dxl_gas_station.access_tank_dip_reading,access_tank_dip_reading,dxl_gas_station.model_tank_dip_reading,base.group_user,1,1,1,1
+dxl_gas_station.access_tank_dip_reading_line,access_tank_dip_reading_line,dxl_gas_station.model_tank_dip_reading_line,base.group_user,1,1,1,1
+dxl_gas_station.access_tank_nozzle,access_tank_nozzle,dxl_gas_station.model_tank_nozzle,base.group_user,1,1,1,1
+dxl_gas_station.access_nozzle_dip_reading,access_nozzle_dip_reading,dxl_gas_station.model_nozzle_dip_reading,base.group_user,1,1,1,1
+dxl_gas_station.access_nozzle_dip_reading_line,access_nozzle_dip_reading_line,dxl_gas_station.model_nozzle_dip_reading_line,base.group_user,1,1,1,1

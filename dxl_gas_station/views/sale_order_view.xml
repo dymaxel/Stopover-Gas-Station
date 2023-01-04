@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_inherit_stopover" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.stopover</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sale_order_template_id']" position="before">
+                    <field name="sale_type"/>
+                    <field name="branch_id"/>
+                    <field name="vehicle_number" attrs="{'invisible': [('sale_type', '!=', 'credit')]}"/>
+                    <field name="driver_name" attrs="{'invisible': [('sale_type', '!=', 'credit')]}"/>
+                    <field name="driver_mobile_no" attrs="{'invisible': [('sale_type', '!=', 'credit')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="nozzle_id" domain="[('branch_id', '=', parent.branch_id)]"/>
+                    <field name="opening_qty"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
