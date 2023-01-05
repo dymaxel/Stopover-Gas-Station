@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
+import pytz
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from datetime import datetime
 
 
 class NozzleDipReading(models.Model):
@@ -15,8 +18,7 @@ class NozzleDipReading(models.Model):
         ('posted', 'Posted'),
         ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
     branch_id = fields.Many2one('res.branch', required=True, string="Branch", states={'posted': [('readonly', True)]})
-    opening_date = fields.Datetime('Opening Date', states={'posted': [('readonly', True)]})
-    closing_date = fields.Datetime('Closing Date', states={'posted': [('readonly', True)]})
+    date = fields.Date('Date', required=True, default=fields.Date.context_today, states={'posted': [('submit', True)], 'posted': [('readonly', True)]})
     reading_lines = fields.One2many('nozzle.dip.reading.line', 'reading_id', states={'posted': [('readonly', True)]})
 
     @api.onchange('branch_id')
@@ -72,12 +74,12 @@ class NozzleDipReadingLine(models.Model):
         for line in self:
             line.variance = line.closing_reading - line.physical_reading
 
-    @api.depends('reading_id.opening_date', 'nozzle_id', 'location_id')
+    @api.depends('reading_id.date', 'nozzle_id', 'location_id')
     def _compute_opening_reading(self):
         for line in self:
-            last_reading_line = self.env['nozzle.dip.reading.line'].search([('nozzle_id', '=', line.nozzle_id.id), ('location_id', '=', line.location_id.id), ('reading_id.opening_date', '<', line.reading_id.opening_date), ('reading_id.state', '=', 'posted')], limit=1)
+            last_reading_line = self.env['nozzle.dip.reading.line'].search([('nozzle_id', '=', line.nozzle_id.id), ('location_id', '=', line.location_id.id), ('reading_id.date', '<', line.reading_id.date), ('reading_id.state', '=', 'posted')])
             if last_reading_line:
-                line.opening_reading = last_reading_line.closing_reading
+                line.opening_reading = last_reading_line[-1].physical_reading
             else:
                 line.opening_reading = 0.0
 
@@ -87,27 +89,34 @@ class NozzleDipReadingLine(models.Model):
         res._update_stock_out_data()
         return res
 
-    @api.onchange('nozzle_id', 'location_id', 'reading_id.opening_date', 'reading_id.closing_date')
+    @api.onchange('nozzle_id', 'location_id', 'reading_id.date')
     def _onchange_nozzle_id(self):
         if self.nozzle_id and self.location_id:
             self._update_stock_out_data()
 
+    def convert_to_server_time(self, date):
+        user = self.env.user
+        dt = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        if self.env.user.tz:
+            utc = pytz.timezone('UTC')
+            user_tz = pytz.timezone(self.env.user.tz)
+            dt = user_tz.localize(dt).astimezone(utc)
+        return datetime.strftime(dt, '%Y-%m-%d %H:%M:%S')
+
     def _update_stock_out_data(self):
-        print('CA:::::::::::::::::')
         for line in self.filtered(lambda x: x.reading_id.state in ('draft', 'running')):
             sale_qty = 0.0
-            if line.reading_id.opening_date and line.location_id:
+            if line.reading_id.date and line.location_id:
+                start_at = self.convert_to_server_time(line.reading_id.date.strftime('%Y-%m-%d') + ' 00:00:00')
+                stop_at = self.convert_to_server_time(line.reading_id.date.strftime('%Y-%m-%d') + ' 23:59:59')
                 domain = [
-                    ('date', '>=', line.reading_id.opening_date),
+                    ('date', '>=', start_at),
+                    ('date', '<=', stop_at),
                     ('location_dest_id.usage', '=', 'customer'),
-                    # ('location_dest_id.usage', '=', 'internal'),
-                    # ('location_dest_id.branch_id', '=', branch_id),
                     ('location_id', '=', line.location_id.id),
                     ('state', '=', 'done'),
                     ('sale_line_id.nozzle_id', '=', line.nozzle_id.id),
                 ]
-                if line.reading_id.closing_date:
-                    domain.append(('date', '<=', line.reading_id.closing_date))
                 sale_moves = self.env['stock.move'].sudo().search(domain)
                 sale_qty = sum(sale_moves.mapped('product_uom_qty'))
             line.write({'sale_qty': sale_qty})

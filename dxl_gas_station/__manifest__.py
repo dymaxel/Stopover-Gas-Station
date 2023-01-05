@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Gas Station",
-    "version": "15.0.5",
+    "version": "15.0.6",
     "category": "Gas Station",
     "author": "Dymaxel Systems",
     "depends": ['branch'],
