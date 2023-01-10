@@ -10,6 +10,7 @@
                 <field name="tank_code"/>
                 <field name="branch_id"/>
                 <field name="product_id"/>
+                <field name="dispenser_id"/>
             </tree>
         </field>
     </record>
@@ -30,6 +31,10 @@
                             <field name="tank_code"/>
                             <field name="branch_id"/>
                             <field name="product_id"/>
+                            <field name="dispenser_id"/>
+                        </group>
+                        <group>
+                            <field name="salesperson_id"/>
                         </group>
                     </group>
                 </sheet>

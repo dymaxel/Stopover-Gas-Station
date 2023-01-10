@@ -19,6 +19,7 @@ class NozzleDipReading(models.Model):
         ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
     branch_id = fields.Many2one('res.branch', required=True, string="Branch", states={'posted': [('readonly', True)]})
     date = fields.Date('Date', required=True, default=fields.Date.context_today, states={'posted': [('submit', True)], 'posted': [('readonly', True)]})
+    user_id = fields.Many2one('res.users', string="Manager", default=lambda self: self.env.user)
     reading_lines = fields.One2many('nozzle.dip.reading.line', 'reading_id', states={'posted': [('readonly', True)]})
 
     @api.onchange('branch_id')
@@ -30,6 +31,7 @@ class NozzleDipReading(models.Model):
                 lines.append((0, 0, {
                     'nozzle_id': nozzle.id,
                     'location_id': nozzle.location_id.id,
+                    'salesperson_id': nozzle.salesperson_id.id,
                 }))
         self.reading_lines = lines
 
@@ -63,6 +65,7 @@ class NozzleDipReadingLine(models.Model):
     sale_qty = fields.Float('Sales', readonly=True, copy=False)
     closing_reading = fields.Float('System Nozzle Closing Reading', compute='_compute_closing_reading')
     variance = fields.Float('Variance', compute='_compute_variance')
+    salesperson_id = fields.Many2one('res.users', string="Sales Person")
 
     @api.depends('sale_qty', 'opening_reading')
     def _compute_closing_reading(self):

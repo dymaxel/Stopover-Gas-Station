@@ -37,12 +37,12 @@
                                 <span class="o_stat_text">Purchase</span>
                             </div>
                         </button>
-                        <button class="oe_stat_button" name="action_view_loss_entry" type="object" icon="fa-dollar" attrs="{'invisible': [('loss_entry_count', '=', 0)]}">
+                        <!-- <button class="oe_stat_button" name="action_view_loss_entry" type="object" icon="fa-dollar" attrs="{'invisible': [('loss_entry_count', '=', 0)]}">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="loss_entry_count"/></span>
                                 <span class="o_stat_text">Loss JE</span>
                             </div>
-                        </button>
+                        </button> -->
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -68,6 +68,7 @@
                                     <field name="purchase_qty" force_save="1"/>
                                     <field name="sale_qty" force_save="1"/>
                                     <field name="on_hand_qty"/>
+                                    <field name="dip_reading_gal"/>
                                     <field name="dip_reading"/>
                                     <field name="tank_loss"/>
                                 </tree>

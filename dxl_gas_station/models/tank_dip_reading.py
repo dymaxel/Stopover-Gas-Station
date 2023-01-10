@@ -61,7 +61,7 @@ class TankDipReading(models.Model):
                     ('date', '>=', start_at),
                     ('date', '<=', stop_at),
                     ('location_id.usage', '=', 'supplier'),
-                    ('location_dest_id', '=', reading.reading_lines.mapped('location_id').ids),
+                    ('location_dest_id', 'in', reading.reading_lines.mapped('location_id').ids),
                     ('state', '=', 'done'),
                     ('purchase_line_id', '!=', False),
                 ]
@@ -147,9 +147,9 @@ class TankDipReading(models.Model):
         self.write({'state': 'submit'})
 
     def action_approve(self):
-        if self.reading_lines.filtered(lambda x: x.on_hand_qty > 0 and x.dip_reading == 0):
-            raise ValidationError(_('Please enter Dip Reading on every lines.'))
-        self.action_process_tank_loss()
+        # if self.reading_lines.filtered(lambda x: x.on_hand_qty > 0 and x.dip_reading == 0):
+        #     raise ValidationError(_('Please enter Dip Reading on every lines.'))
+        # self.action_process_tank_loss()
         self.write({'state': 'posted'})
 
     def action_process_tank_loss(self):
@@ -191,7 +191,8 @@ class TankDipReadingLine(models.Model):
     purchase_qty = fields.Float('Purchase', readonly=True)
     sale_qty = fields.Float('Sale', readonly=True)
     on_hand_qty = fields.Float('On Hand Qty', compute="_compute_on_hand_qty")
-    dip_reading = fields.Float('Dip Reading')
+    dip_reading = fields.Float('Dip Reading(cm)')
+    dip_reading_gal = fields.Float('Dip Reading(gal)')
     tank_loss = fields.Float('Tank Loss', compute="_compute_tank_loss")
 
     @api.onchange('dip_reading')

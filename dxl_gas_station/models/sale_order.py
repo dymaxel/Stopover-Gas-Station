@@ -16,10 +16,14 @@ class SaleOrderLine(models.Model):
 
     nozzle_id = fields.Many2one('tank.nozzle')
     opening_qty = fields.Float('Opening Quantity')
+    salesperson_id = fields.Many2one('res.users', string="Nozzle Sales Person")
 
     @api.onchange('nozzle_id')
     def _onchange_nozzle_id(self):
         if self.nozzle_id and self.nozzle_id.product_id:
             self.product_id = self.nozzle_id.product_id.id
+            nozzle_line = self.env['nozzle.dip.reading.line'].search([('reading_id.date', '=', fields.Date.today()), ('nozzle_id', '=', self.nozzle_id.id), ('salesperson_id', '!=', False)], limit=1)
+            if nozzle_line:
+                self.salesperson_id = nozzle_line.salesperson_id.id
         else:
             self.product_id = False

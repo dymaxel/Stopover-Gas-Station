@@ -8,6 +8,7 @@
                 <field name="name"/>
                 <field name="branch_id"/>
                 <field name="date"/>
+                <field name="user_id"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -34,6 +35,9 @@
                             <field name="branch_id"/>
                             <field name="date"/>
                         </group>
+                        <group>
+                            <field name="user_id"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Details">
@@ -47,6 +51,7 @@
                                     <field name="closing_reading"/>
                                     <field name="physical_reading"/>
                                     <field name="variance"/>
+                                    <field name="salesperson_id"/>
                                 </tree>
                             </field>
                         </page>
