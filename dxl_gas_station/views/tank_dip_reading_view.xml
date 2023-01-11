@@ -68,8 +68,8 @@
                                     <field name="purchase_qty" force_save="1"/>
                                     <field name="sale_qty" force_save="1"/>
                                     <field name="on_hand_qty"/>
-                                    <field name="dip_reading_gal"/>
                                     <field name="dip_reading"/>
+                                    <field name="dip_reading_gal"/>
                                     <field name="tank_loss"/>
                                 </tree>
                             </field>

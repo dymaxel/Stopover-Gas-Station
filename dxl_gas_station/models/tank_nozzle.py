@@ -12,5 +12,4 @@ class TankNozzle(models.Model):
     branch_id = fields.Many2one('res.branch', related="location_id.branch_id", string="Branch")
     product_id = fields.Many2one('product.product', related="location_id.product_id")
     tank_name = fields.Char('Tank Name', related="location_id.tank_name")
-    dispenser_id = fields.Many2one('nozzle.dispenser', string="Dispenser")
-    salesperson_id = fields.Many2one('res.users', string="Sales Person")
+    dispenser_id = fields.Many2one('nozzle.dispenser', string="Pump")

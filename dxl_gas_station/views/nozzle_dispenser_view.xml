@@ -17,7 +17,7 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Dispenser.." nolabel="1"/>
+                            <field name="name" placeholder="Pump Name.." nolabel="1"/>
                         </h1>
                     </div>
                 </sheet>
@@ -26,7 +26,7 @@
     </record>
 
     <record id="action_dispenser" model="ir.actions.act_window">
-        <field name="name">Dispenser</field>
+        <field name="name">Pumps</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">nozzle.dispenser</field>
         <field name="view_mode">tree,form</field>
@@ -43,7 +43,7 @@
 
     <menuitem
             id="menu_dispenser"
-            name="Dispenser"
+            name="Pumps"
             parent="menu_sub_configuration"
             action="action_dispenser"
             sequence="40"/>

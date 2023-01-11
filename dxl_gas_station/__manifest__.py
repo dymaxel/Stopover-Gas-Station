@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Gas Station",
-    "version": "15.0.7",
+    "version": "15.0.8",
     "category": "Gas Station",
     "author": "Dymaxel Systems",
     "depends": ['branch'],
@@ -14,6 +14,7 @@
         'views/nozzle_dip_reading_view.xml',
         'views/sale_order_view.xml',
         'views/stock_location_view.xml',
+        'views/nozzle_salesperson_view.xml',
     ],
     "installable": True,
     "application": True,

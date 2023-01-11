@@ -6,3 +6,4 @@ from . import tank_nozzle
 from . import nozzle_dip_reading
 from . import sale_order
 from . import stock_move
+from . import nozzle_salesperson

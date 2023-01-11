@@ -28,10 +28,11 @@ class NozzleDipReading(models.Model):
         if self.branch_id:
             nozzle_ids = self.env['tank.nozzle'].sudo().search([('branch_id', '=', self.branch_id.id), ('product_id', '!=', False)])
             for nozzle in nozzle_ids:
+                nozzle_line_id = self.env['nozzle.salesperson.line'].search([('nozzle_id', '=', nozzle.id), ('branch_id', '=', self.branch_id.id)], limit=1)
                 lines.append((0, 0, {
                     'nozzle_id': nozzle.id,
                     'location_id': nozzle.location_id.id,
-                    'salesperson_id': nozzle.salesperson_id.id,
+                    'salesperson_id': nozzle_line_id and nozzle_line_id.salesperson_id.id,
                 }))
         self.reading_lines = lines
 

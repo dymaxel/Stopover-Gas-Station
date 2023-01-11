@@ -33,9 +33,6 @@
                             <field name="product_id"/>
                             <field name="dispenser_id"/>
                         </group>
-                        <group>
-                            <field name="salesperson_id"/>
-                        </group>
                     </group>
                 </sheet>
             </form>
