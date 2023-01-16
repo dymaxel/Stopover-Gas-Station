@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_inherit_stopover" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.stopover</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sale_order_template_id']" position="before">
+                    <field name="sale_type"/>
+                    <field name="branch_id"/>
+                    <field name="vehicle_number" attrs="{'invisible': [('sale_type', '!=', 'credit')]}"/>
+                    <field name="driver_name" attrs="{'invisible': [('sale_type', '!=', 'credit')]}"/>
+                    <field name="driver_mobile_no" attrs="{'invisible': [('sale_type', '!=', 'credit')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="nozzle_id" domain="[('branch_id', '=', parent.branch_id)]"/>
+                    <field name="opening_qty"/>
+                    <field name="salesperson_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_order_product_search_inherit_stopover" model="ir.ui.view">
+            <field name="name">sale.report.search.inherit.stopover</field>
+            <field name="model">sale.report</field>
+            <field name="inherit_id" ref="sale.view_order_product_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='date']" position="after">
+                    <separator/>
+                    <filter string="Branch" name="branch" context="{'group_by': 'branch_id'}"/>
+                    <filter string="Warehouse" name="warehouse" context="{'group_by': 'warehouse_id'}"/>
+                    <filter string="Product" name="product" context="{'group_by':'product_id'}"/>
+                    <filter string="Pump" name="pump" context="{'group_by': 'dispenser_id'}"/>
+                    <filter string="Nozzle" name="nozzle" context="{'group_by':'nozzle_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

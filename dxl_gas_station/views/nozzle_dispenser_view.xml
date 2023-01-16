@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="nozzle_dispenser_tree" model="ir.ui.view">
+        <field name="name">nozzle.dispenser.tree</field>
+        <field name="model">nozzle.dispenser</field>
+        <field name="arch" type="xml">
+            <tree string="Dispenser">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="nozzle_dispenser_form" model="ir.ui.view">
+        <field name="name">nozzle.dispenser.form</field>
+        <field name="model">nozzle.dispenser</field>
+        <field name="arch" type="xml">
+            <form string="Dispenser">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Pump Name.." nolabel="1"/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dispenser" model="ir.actions.act_window">
+        <field name="name">Pumps</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">nozzle.dispenser</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No orders found
+            </p>
+            <p>
+                To dispenser record.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_dispenser"
+            name="Pumps"
+            parent="dxl_gas_station.menu_sub_configuration"
+            action="action_dispenser"
+            sequence="40"/>
+</odoo>
