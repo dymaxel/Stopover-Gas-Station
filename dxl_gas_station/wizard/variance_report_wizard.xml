@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="variance_report_wizard_view_form" model="ir.ui.view">
+            <field name="name">variance.report.wizard.form</field>
+            <field name="model">variance.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Variance Consolidated Report">
+                    <group>
+                        <group >
+                            <field name="start_at"/>
+                            <field name="branch_id"/>
+                        </group>
+                        <group >
+                            <field name="stop_at"/>
+                            <field name="product_ids" widget="many2many_tags" options="{'no_create':1}"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="print_pdf_report" type="object" string="Print XLS" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_variance_report" model="ir.actions.act_window">
+            <field name="name">Variance Consolidated Report</field>
+            <field name="res_model">variance.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_variance_report"
+            action="action_product_variance_report"
+            parent="dxl_gas_station.menu_sub_reports"
+            sequence="10"/>
+    </data>
+</odoo>

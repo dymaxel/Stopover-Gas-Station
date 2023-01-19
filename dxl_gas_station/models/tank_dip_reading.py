@@ -200,10 +200,10 @@ class TankDipReadingLine(models.Model):
         if self.dip_reading > self.on_hand_qty:
             raise ValidationError(_('Dip Reading should not more than on hand quantity.'))
 
-    @api.depends('on_hand_qty', 'dip_reading')
+    @api.depends('on_hand_qty', 'dip_reading_gal')
     def _compute_tank_loss(self):
         for line in self:
-            line.tank_loss = line.on_hand_qty - line.dip_reading
+            line.tank_loss = line.on_hand_qty - line.dip_reading_gal
 
     @api.depends('reading_id.date', 'location_id', 'previous_stock_qty', 'purchase_qty', 'sale_qty')
     def _compute_on_hand_qty(self):

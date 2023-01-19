@@ -119,6 +119,12 @@
             sequence="20"/>
 
     <menuitem
+            id="menu_sub_reports"
+            name="Reports"
+            parent="root_menu_gas_station"
+            sequence="30"/>
+
+    <menuitem
             id="menu_tank_dip_reading"
             name="Dip Readings"
             parent="menu_sub_readings"

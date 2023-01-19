@@ -10,6 +10,19 @@ class SaleOrder(models.Model):
     driver_name = fields.Char('Driver Name', copy=False)
     driver_mobile_no = fields.Char('Driver Mobile Number', copy=False)
 
+    def action_confirm(self):
+        res = super(SaleOrder, self).action_confirm()
+        for sale in self.filtered(lambda x: x.company_id.auto_invoice):
+            # Force done delivery - dawaai
+            for picking in sale.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel')):
+                for move in picking.move_lines:
+                    move.write({'quantity_done': move.product_uom_qty})
+                picking.button_validate()
+
+            # Create Customer Invoice on sale confirm
+            invoice = sale._create_invoices()
+            invoice.action_post()
+        return res
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
