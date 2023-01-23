@@ -5,7 +5,7 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="text-center">
-                        <h4 style="font-weight:600;">Variance Consolidated Report</h4>
+                        <h4 style="font-weight:600;">Tank Report</h4>
                     </div>
                     <div class="page">
                         <div class="oe_structure"/>
@@ -35,9 +35,10 @@
                                             <th class="text-right">Purchase</th>
                                             <th class="text-right">Sale</th>
                                             <th class="text-right">Dip Reading</th>
-                                            <th class="text-right">Meter Reading</th>
+<!--                                            <th class="text-right">Meter Reading</th>-->
                                             <th class="text-right">Adjustments</th>
                                             <th class="text-right">On Hand Qty</th>
+                                            <th class="text-right">Tank Loss</th>
                                         </tr>
                                     </thead>
                                     <t t-set="total_dip_reading" t-value="0"/>
@@ -51,9 +52,10 @@
                                             <td class="text-right"><span t-esc="line['purchase']"/></td>
                                             <td class="text-right"><span t-esc="line['sale']"/></td>
                                             <td class="text-right"><span t-esc="line['dip_reading']"/></td>
-                                            <td class="text-right"><span t-esc="line['meter_reading']"/></td>
+<!--                                            <td class="text-right"><span t-esc="line['meter_reading']"/></td>-->
                                             <td class="text-right"><span t-esc="line['adjustment']"/></td>
                                             <td class="text-right"><span t-esc="line['onhand']"/></td>
+                                            <td class="text-right"><span t-esc="line['tank_loss']"/></td>
                                         </tr>
                                         <t t-set="total_dip_reading" t-value="total_dip_reading + line['dip_reading']"/>
                                         <t t-set="total_meter_reading" t-value="total_meter_reading + line['meter_reading']"/>

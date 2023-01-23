@@ -72,7 +72,8 @@ class QualitySheetReport(models.AbstractModel):
                         'dip_reading': reading_line.dip_reading_gal,
                         'meter_reading': sum(meter_reading_line.mapped('variance')),
                         'adjustment': adj_qty,
-                        'onhand': onhand
+                        'onhand': onhand,
+                        'tank_loss': reading_line.tank_loss
                     })
             product_wise_data[product.id] = report_data
 

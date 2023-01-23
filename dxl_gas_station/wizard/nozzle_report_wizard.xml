@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record id="variance_report_wizard_view_form" model="ir.ui.view">
-            <field name="name">variance.report.wizard.form</field>
-            <field name="model">variance.report.wizard</field>
+           <record id="nozzle_report_wizard_view_form" model="ir.ui.view">
+            <field name="name">nozzle.report.wizard.form</field>
+            <field name="model">nozzle.report.wizard</field>
             <field name="arch" type="xml">
-                <form string="Tank Report">
+                <form string="Daily Summary Of Fuel Pump">
                     <group>
                         <group >
                             <field name="start_at"/>
                             <field name="branch_id"/>
-                        </group>
-                        <group >
-                            <field name="stop_at"/>
-                            <field name="product_ids" widget="many2many_tags" options="{'no_create':1}"/>
                         </group>
                     </group>
                     <footer>
@@ -24,17 +20,19 @@
             </field>
         </record>
 
-           <record id="action_product_variance_report" model="ir.actions.act_window">
-            <field name="name">Tank Report</field>
-            <field name="res_model">variance.report.wizard</field>
+
+
+
+         <record id="action_product_nozzle_report" model="ir.actions.act_window">
+            <field name="name">Daily Summary Of Fuel Pump</field>
+            <field name="res_model">nozzle.report.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
 
-        <menuitem id="menu_variance_report"
-            action="action_product_variance_report"
+          <menuitem id="menu_nozzle_report"
+            action="action_product_nozzle_report"
             parent="dxl_gas_station.menu_sub_reports"
-            sequence="10"/>
-
+            sequence="20"/>
     </data>
 </odoo>

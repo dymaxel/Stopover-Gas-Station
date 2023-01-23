@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="nozzle_report_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="text-center">
+                        <h4 style="font-weight:600;">Daily Summary Of Fuel Pump</h4>
+                    </div>
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="row mt32 mb32" id="informations">
+                            <div  class="col-auto col-3 mw-100 mb-2">
+                                <strong>Date:</strong>
+                                <p class="m-0" t-esc="date_from"/>
+                            </div>
+                            <div class="col-auto col-3 mw-100 mb-2">
+                                <strong>Branch:</strong>
+                                <p class="m-0" t-esc="branch"/>
+                            </div>
+                        </div>
+                         <table class="table table-sm o_main_table">
+                                    <thead style="display: table-row-group">
+                                         <tr>
+                                             <th>Gauging (Tank Readings)</th>
+                                          <t t-foreach="tanks.get(branch)" t-as="tank">
+                                            &lt;th style=background-color:!important &gt;&lt;/th&gt;
+                                            <th><t t-esc="tank['tank']"/></th>
+                                          </t>
+                                        </tr>
+
+                                    </thead>
+                                </table>
+
+                             <table class="table table-sm o_main_table">
+                                    <thead style="display: table-row-group">
+                                        <tr>
+                                            <th>Nozzle</th>
+                                            <th class="text-center">Product</th>
+                                            <th class="text-center">System Opening Reading</th>
+                                            <th class="text-center">System Closing Reading</th>
+                                            <th class="text-center">No of Gallons</th>
+                                            <th class="text-center">Unit Price (Per Gallon)</th>
+                                            <th class="text-center">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+                                        <tr t-foreach="readings" t-as="line">
+                                            <td class="text-center"><span t-esc="line['nozzle']"/></td>
+                                            <td class="text-center"><span t-esc="line['product']"/></td>
+                                            <td class="text-center"><span t-esc="line['opening']"/></td>
+                                            <td class="text-center"><span t-esc="line['closing']"/></td>
+                                            <td class="text-center"><span t-esc="line['gal']"/></td>
+                                            <td class="text-center"><span t-esc="line['unit']"/></td>
+                                            <td class="text-center"><span t-esc="line['amount']"/></td>
+                                        </tr>
+                                    </tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-right">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <strong>Opening meter - Closing meter = No. of Gallons</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <strong>Opening meter - Closing meter = No. of Gallons</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <strong>Total of Gallons</strong>
+                                        </td>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <strong>No of Gallons * Unit Price = Amount (Total of all products amount)</strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
